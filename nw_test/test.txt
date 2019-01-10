@@ -1,0 +1,27 @@
+print("inversion")
+A = ['A','T','G','C','G','A','T','C','G','A']
+B = ['A','T','G','C','G','A','T','G','C','A']
+
+print("rearrangement")
+A = ['A','B','C','D','E','F']
+B = ['D','E','F','A','B','C']
+
+print("duplication")
+A = ['A','B','C','C','D','E','F']
+B = ['A','B','C','D','E','F']
+
+print("duplication")
+A = ['A','B','C','B','C','E','F']
+B = ['A','B','C','E','F']
+
+print("duplication")
+A = ['A','B','C','D','B','C','D','E','F']
+B = ['A','B','C','D','E','F']
+
+print("duplication")
+A = ['A','B','C','D','K','B','C','D','K','E','F']
+B = ['A','B','C','D','K','E','F']
+
+print("repeat")
+A = ['A','B','C','D','K','B','C','D','K','B','C','D','K','E','F']
+B = ['A','B','C','D','K','E','F']
