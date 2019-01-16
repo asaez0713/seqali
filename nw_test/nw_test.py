@@ -47,36 +47,38 @@ def nw(A,B):
             elif c == c3:
                 gapA += 1
 
-    print(M)
-
     paths = Tree()
+    count = 0
 
-    def gen_branches(S,T):
+    def gen_branches(S,T,ct):
         ML = np.transpose(np.transpose(S)[:-1])
         MU = S[:-1]
         MD = ML[:-1]
         i = len(S) - 1
         j = len(S[0]) - 1
 
+        L = S[i][j - 1]
+        U = S[i - 1][j]
+        D = S[i - 1][j - 1]
+        check = min(L,U,D)
+        
+
         if i == 1 and j == 1:
-            T.createChildren(1)
-            T.setChildrenValues(['END'])
+            T.createChildren(2)
+            T.setChildrenValues(['END',ct])
             return(0)
 
         if j == 1 and i > 1:
             T.createChildren(1)
             T.setChildrenValues(['U'])
-            gen_branches(MU,T.child[-1])
+            ct += U
+            gen_branches(MU,T.child[-1],ct)
 
         if i == 1 and j > 1:
             T.createChildren(1)
             T.setChildrenValues(['L'])
-            gen_branches(ML,T.child[-1])
-
-        L = S[i][j - 1]
-        U = S[i - 1][j]
-        D = S[i - 1][j - 1]
-        check = min(L,U,D)
+            ct += L
+            gen_branches(ML,T.child[-1],ct)
         
         while(i > 1 and j > 1):
             if L == check:
@@ -86,8 +88,9 @@ def nw(A,B):
                 else:
                     T.createChildren(1)
                     T.setChildrenValues(['L'])
+                    ct += L
                     j -= 1
-                    gen_branches(ML,T.child[-1])
+                    gen_branches(ML,T.child[-1],ct)
             if U == check:
                 if 'U' in T.data:
                     i -= 1
@@ -95,8 +98,9 @@ def nw(A,B):
                 else:
                     T.createChildren(1)
                     T.setChildrenValues(['U'])
+                    ct += U
                     i -= 1
-                    gen_branches(MU,T.child[-1])
+                    gen_branches(MU,T.child[-1],ct)
             if D == check:
                 if 'D' in T.data:
                     i -= 1
@@ -105,17 +109,18 @@ def nw(A,B):
                 else:
                     T.createChildren(1)
                     T.setChildrenValues(['D'])
+                    ct += D
                     i -= 1
                     j -= 1
-                    gen_branches(MD,T.child[-1])
+                    gen_branches(MD,T.child[-1],ct)
 
-    gen_branches(M,paths)
+    gen_branches(M,paths,count)
     path_lst = []
 
     def get_paths(paths,current):
         n = len(paths.data)
-        if paths.data == ['END']:
-            path_lst.append(current)
+        if paths.data[0] == 'END':
+            path_lst.append([current,paths.data[1]])
             return(0)
         else:
             current = [current[:] for i in range(n)]
@@ -124,18 +129,21 @@ def nw(A,B):
                 get_paths(paths.child[i],current[i])
 
     get_paths(paths,path_lst)
-    print('\n')
-    print(path_lst)
-    print('\n')
+
+    depth = [path[1] for path in path_lst]
+    copy = path_lst[:]
+    for pair in copy:
+        if pair[1] != np.min(depth):
+            path_lst.remove(pair)
 
     def get_align(path,A,B):
         A_new = [A[-1]]
         B_new = [B[-1]]
         i = len(A) - 1
         j = len(B) - 1
-        n = len(path)
+        n = len(path[0])
         while n > 0:
-            for d in path:
+            for d in path[0]:
                 if d == 'L':
                     A_new.append(A[i-1])
                     B_new.append('-')
@@ -161,12 +169,12 @@ def nw(A,B):
 
     aligns = []
     for path in path_lst:
-        print('new path')
         aligns.append([get_align(path,A,B)[0],get_align(path,A,B)[1]])
     
     return(aligns)
 
+
 A = ['A','B','C','D','K','B','C','D','K','B','C','D','K','E','F']                
 B = ['A','B','C','D','K','E','F'] 
 
-print(nw(A,B)[-1])
+print(nw(A,B))
