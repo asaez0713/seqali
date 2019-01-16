@@ -31,6 +31,7 @@ for i in range(len(Alst1)):
     f1.write('B = '+str(Blst1[i]))
     f1.write('\n')
     f1.write('Alignments:')
+    f1.write('\n')
     for pair in nw(Alst1[i],Blst1[i]):
         f1.write(str(pair[0]))
         f1.write('\n')
