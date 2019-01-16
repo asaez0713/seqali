@@ -23,10 +23,17 @@ Blst1 = [lst.split("','") for lst in Blst]
 
 f1 = open('nw_out.txt','w')
 for i in range(len(Alst1)):
-    f1.write(words[i]+':')
+    f1.write(words[i])
+    f1.write('Originals:')
     f1.write('\n')
-    f1.write(str(nw(Alst1[i],Blst1[i])[0]))
+    f1.write('A = '+str(Alst1[i]))
     f1.write('\n')
-    f1.write(str(nw(Alst1[i],Blst1[i])[1]))
+    f1.write('B = '+str(Blst1[i]))
     f1.write('\n')
-    f1.write('\n')
+    f1.write('Alignments:')
+    for pair in nw(Alst1[i],Blst1[i]):
+        f1.write(str(pair[0]))
+        f1.write('\n')
+        f1.write(str(pair[1]))
+        f1.write('\n')
+        f1.write('\n')

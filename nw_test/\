@@ -70,7 +70,7 @@ def nw(A,B):
 
         if i == 1 and j > 1:
             T.createChildren(1)
-            T.setChildrenValues(['L'])
+            T.setChildrenValues([L])
             gen_branches(ML,T.child[-1])
 
         L = S[i][j - 1]
@@ -124,49 +124,40 @@ def nw(A,B):
                 get_paths(paths.child[i],current[i])
 
     get_paths(paths,path_lst)
-    print('\n')
     print(path_lst)
-    print('\n')
 
     def get_align(path,A,B):
-        A_new = [A[-1]]
-        B_new = [B[-1]]
-        i = len(A) - 1
-        j = len(B) - 1
-        n = len(path)
-        while n > 0:
+        A_new = []
+        B_new = []
+        i = len(path) - 1
+        while i > 0:
             for d in path:
                 if d == 'L':
-                    A_new.append(A[i-1])
+                    A_new.append(A[i])
                     B_new.append('-')
                     i -= 1
-                    n -= 1
                 if d == 'U':
                     A_new.append('-')
-                    B_new.append(B[j-1])
-                    j -= 1
-                    n -= 1
-                if d == 'D':
-                    A_new.append(A[i-1])
-                    B_new.append(B[j-1])
+                    B_new.append(B[i])
                     i -= 1
-                    j -= 1
-                    n -= 1
+                if d == 'D':
+                    A_new.append(A[i])
+                    B_new.append(B[i])
+                    i -= 1
 
-        A_new.reverse()
-        B_new.reverse()
+#        A_new.reverse()
+#        B_new.reverse()
 
         return(A_new,B_new)
 
-
     aligns = []
     for path in path_lst:
-        print('new path')
         aligns.append([get_align(path,A,B)[0],get_align(path,A,B)[1]])
+    print(aligns)
     
-    return(aligns)
+    return(0)
 
-A = ['A','B','C','D','K','B','C','D','K','B','C','D','K','E','F']                
-B = ['A','B','C','D','K','E','F'] 
+A = ['A','T','G','C','A']
+B = ['A','T','C','G','A']
 
-print(nw(A,B)[-1])
+nw(A,B)
