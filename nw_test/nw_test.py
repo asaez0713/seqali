@@ -14,6 +14,24 @@ class Tree(object):
             self.data.append(list[i])
 
 def nw(A,B):
+    if type(A) != list or type(B) != list:
+        print('Invalid input. Input should be a list of base pairs (strings).')
+        return(0)
+    for item in A:
+        if item != 'A' and item != 'T' and item != 'C' and item != 'G':
+            print('Invalid input. Input should be a list of base pairs
+            (strings).')
+            return(0)
+        else:
+            pass
+    for item in B:
+        if item != 'A' and item != 'T' and item != 'C' and item != 'G':
+            print('Invalid input. Input should be a list of base pairs
+            (strings).')
+            return(0)
+        else:
+            pass
+
     m = len(A) + 1
     n = len(B) + 1
     M = np.zeros((m,n))
