@@ -183,8 +183,3 @@ def nw(A,B):
         aligns.append([get_align(path,A,B)[0],get_align(path,A,B)[1]])
     
     return(aligns)
-
-A = ['A','B','C','D','E','F']
-B = ['D','E','F','A','B','C']
-
-nw(A,B)
