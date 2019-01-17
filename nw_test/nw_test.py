@@ -15,19 +15,20 @@ class Tree(object):
 
 def nw(A,B):
     if type(A) != list or type(B) != list:
-        print('Invalid input. Input should be a list of base pairs (strings).')
+        print('Invalid input.',
+                'Input should be a list of base pairs (strings).')
         return(0)
     for item in A:
         if type(item) != str:
-            print('Invalid input. Input should be a list of base pairs
-            (strings).')
+            print('Invalid input.',
+                    'Input should be a list of base pairs (strings).')
             return(0)
         else:
             pass
     for item in B:
-        if type item != str:
-            print('Invalid input. Input should be a list of base pairs
-            (strings).')
+        if type(item) != str:
+            print('Invalid input.',
+                    'Input should be a list of base pairs(strings).')
             return(0)
         else:
             pass
@@ -46,24 +47,16 @@ def nw(A,B):
         M[0][i] = i * mismatch
 
     for i in range(1,len(A)+1):
-        gapA = 0
-        gapB = 0
         for j in range(1,len(B)+1):
             if A[i-1] == B[j-1]:
                 score = match
             else:
                 score = mismatch
             c1 = M[i-1][j-1] + score
-            c2 = M[i-1][j] + gapB + indel
-            c3 = M[i][j-1] + gapA + indel
+            c2 = M[i-1][j] + indel
+            c3 = M[i][j-1] + indel
             c = np.min([c1,c2,c3])
             M[i][j] = c
-#            if c == c1:
-#                gapA = gapB = 0
-#            elif c == c2:
-#                gapB += 1
-#            elif c == c3:
-#                gapA += 1
     
     paths = Tree()
     count = 0
