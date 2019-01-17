@@ -18,14 +18,14 @@ def nw(A,B):
         print('Invalid input. Input should be a list of base pairs (strings).')
         return(0)
     for item in A:
-        if item != 'A' and item != 'T' and item != 'C' and item != 'G':
+        if type(item) != str:
             print('Invalid input. Input should be a list of base pairs
             (strings).')
             return(0)
         else:
             pass
     for item in B:
-        if item != 'A' and item != 'T' and item != 'C' and item != 'G':
+        if type item != str:
             print('Invalid input. Input should be a list of base pairs
             (strings).')
             return(0)
