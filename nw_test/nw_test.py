@@ -68,7 +68,7 @@ def nw(A,B):
         i = len(S) - 1
         j = len(S[0]) - 1
 
-        L = S[i][j - 1]
+        L = S[i][j - 1] 
         U = S[i - 1][j]
         D = S[i - 1][j - 1]
         check = min(L,U,D)
