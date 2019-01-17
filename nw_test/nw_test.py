@@ -40,13 +40,13 @@ def nw(A,B):
             c3 = M[i][j-1] + gapA + indel
             c = np.min([c1,c2,c3])
             M[i][j] = c
-            if c == c1:
-                gapA = gapB = 0
-            elif c == c2:
-                gapB += 1
-            elif c == c3:
-                gapA += 1
-
+#            if c == c1:
+#                gapA = gapB = 0
+#            elif c == c2:
+#                gapB += 1
+#            elif c == c3:
+#                gapA += 1
+    
     paths = Tree()
     count = 0
 
@@ -132,9 +132,9 @@ def nw(A,B):
 
     depth = [path[1] for path in path_lst]
     copy = path_lst[:]
-    for pair in copy:
-        if pair[1] != np.min(depth):
-            path_lst.remove(pair)
+#    for pair in copy:
+#        if pair[1] != np.min(depth):
+#            path_lst.remove(pair)
 
     def get_align(path,A,B):
         A_new = [A[-1]]
@@ -145,14 +145,14 @@ def nw(A,B):
         while n > 0:
             for d in path[0]:
                 if d == 'L':
-                    A_new.append(A[i-1])
-                    B_new.append('-')
-                    i -= 1
-                    n -= 1
-                if d == 'U':
                     A_new.append('-')
                     B_new.append(B[j-1])
                     j -= 1
+                    n -= 1
+                if d == 'U':
+                    A_new.append(A[i-1])
+                    B_new.append('-')
+                    i -= 1
                     n -= 1
                 if d == 'D':
                     A_new.append(A[i-1])
@@ -173,8 +173,7 @@ def nw(A,B):
     
     return(aligns)
 
+A = ['A','B','C','D','E','F']
+B = ['D','E','F','A','B','C']
 
-A = ['A','B','C','D','K','B','C','D','K','B','C','D','K','E','F']                
-B = ['A','B','C','D','K','E','F'] 
-
-print(nw(A,B))
+nw(A,B)

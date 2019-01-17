@@ -24,6 +24,7 @@ Blst1 = [lst.split("','") for lst in Blst]
 f1 = open('nw_out.txt','w')
 for i in range(len(Alst1)):
     f1.write(words[i])
+    f1.write('\n')
     f1.write('Originals:')
     f1.write('\n')
     f1.write('A = '+str(Alst1[i]))
