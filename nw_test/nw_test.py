@@ -68,7 +68,7 @@ def nw(A,B):
         i = len(S) - 1
         j = len(S[0]) - 1
 
-        L = S[i][j - 1]
+        L = S[i][j - 1] 
         U = S[i - 1][j]
         D = S[i - 1][j - 1]
         check = S[i][j]
@@ -199,8 +199,3 @@ def nw(A,B):
         aligns.append([get_align(path,A,B)[0],get_align(path,A,B)[1]])
     
     return(aligns)
-
-A = ['A','G','C','T','G','C','A']
-B = ['A','G','C','T','C','G','A']
-
-print(nw(A,B))
