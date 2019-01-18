@@ -61,7 +61,7 @@ def nw(A,B):
     paths = Tree()
     count = 0
 
-    def gen_branches(S,T,ct):
+    def gen_branches(S,T,ct,A,B):
         ML = np.transpose(np.transpose(S)[:-1])
         MU = S[:-1]
         MD = ML[:-1]
@@ -71,8 +71,9 @@ def nw(A,B):
         L = S[i][j - 1]
         U = S[i - 1][j]
         D = S[i - 1][j - 1]
-        check = min(L,U,D)
-        
+        check = S[i][j]
+
+        m = bool(A[i-1] == B[j-1])
 
         if i == 1 and j == 1:
             T.createChildren(2)
@@ -83,16 +84,16 @@ def nw(A,B):
             T.createChildren(1)
             T.setChildrenValues(['U'])
             ct += U
-            gen_branches(MU,T.child[-1],ct)
+            gen_branches(MU,T.child[-1],ct,A,B)
 
         if i == 1 and j > 1:
             T.createChildren(1)
             T.setChildrenValues(['L'])
             ct += L
-            gen_branches(ML,T.child[-1],ct)
+            gen_branches(ML,T.child[-1],ct,A,B)
         
         while(i > 1 and j > 1):
-            if L == check:
+            if L == check - indel:
                 if 'L' in T.data:
                     j -= 1
                     pass
@@ -101,8 +102,8 @@ def nw(A,B):
                     T.setChildrenValues(['L'])
                     ct += L
                     j -= 1
-                    gen_branches(ML,T.child[-1],ct)
-            if U == check:
+                    gen_branches(ML,T.child[-1],ct,A,B)
+            if U == check - indel:
                 if 'U' in T.data:
                     i -= 1
                     pass
@@ -111,8 +112,8 @@ def nw(A,B):
                     T.setChildrenValues(['U'])
                     ct += U
                     i -= 1
-                    gen_branches(MU,T.child[-1],ct)
-            if D == check:
+                    gen_branches(MU,T.child[-1],ct,A,B)
+            if not m and D == check - mismatch:
                 if 'D' in T.data:
                     i -= 1
                     j -= 1
@@ -123,9 +124,22 @@ def nw(A,B):
                     ct += D
                     i -= 1
                     j -= 1
-                    gen_branches(MD,T.child[-1],ct)
+                    gen_branches(MD,T.child[-1],ct,A,B)
+            if m and D == check - match:
+                if 'D' in T.data:
+                    i -= 1
+                    j -= 1
+                    pass
+                else:
+                    T.createChildren(1)
+                    T.setChildrenValues(['D'])
+                    ct += D
+                    i -= 1
+                    j -= 1
+                    gen_branches(MD,T.child[-1],ct,A,B)
 
-    gen_branches(M,paths,count)
+
+    gen_branches(M,paths,count,A,B)
     path_lst = []
 
     def get_paths(paths,current):
@@ -141,15 +155,15 @@ def nw(A,B):
 
     get_paths(paths,path_lst)
 
-    depth = [path[1] for path in path_lst]
-    copy = path_lst[:]
+#    depth = [path[1] for path in path_lst]
+#    copy = path_lst[:]
 #    for pair in copy:
 #        if pair[1] != np.min(depth):
 #            path_lst.remove(pair)
 
     def get_align(path,A,B):
-        A_new = [A[-1]]
-        B_new = [B[-1]]
+        A_new = []
+        B_new = []
         i = len(A) - 1
         j = len(B) - 1
         n = len(path[0])
@@ -157,22 +171,24 @@ def nw(A,B):
             for d in path[0]:
                 if d == 'L':
                     A_new.append('-')
-                    B_new.append(B[j-1])
+                    B_new.append(B[j])
                     j -= 1
                     n -= 1
                 if d == 'U':
-                    A_new.append(A[i-1])
+                    A_new.append(A[i])
                     B_new.append('-')
                     i -= 1
                     n -= 1
                 if d == 'D':
-                    A_new.append(A[i-1])
-                    B_new.append(B[j-1])
+                    A_new.append(A[i])
+                    B_new.append(B[j])
                     i -= 1
                     j -= 1
                     n -= 1
 
+        A_new.append(A[0])
         A_new.reverse()
+        B_new.append(B[0])
         B_new.reverse()
 
         return(A_new,B_new)
@@ -184,7 +200,7 @@ def nw(A,B):
     
     return(aligns)
 
-A = ['A','B','C','D','E','F']
-B = ['D','E','F','A','B','C']
+A = ['A','G','C','T','G','C','A']
+B = ['A','G','C','T','C','G','A']
 
-nw(A,B)
+print(nw(A,B))
